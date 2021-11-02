@@ -23,7 +23,7 @@
 import UIKit
 
 class LoginController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -83,11 +83,15 @@ class LoginController: UIViewController {
     
     @objc func loginClick(){
         print("login click")
-        let background = BackgroundView()
-        view.addSubview(background)
-        let popup = PopUpView()
-        view.addSubview(popup)
+        background = BackgroundView()
+        view.addSubview(self.background)
+        popup = PopUpView()
+        popup.delegate = self
+        view.addSubview(self.popup)
     }
+    
+    var background:BackgroundView!
+    var popup:PopUpView!
     
     let input: UITextField = {
         let view = UITextField()
@@ -127,3 +131,8 @@ class LoginController: UIViewController {
     }()
 }
 
+extension LoginController: PopUpViewDelegate {
+    func dismissView() {
+        background.dismissView()
+    }
+}

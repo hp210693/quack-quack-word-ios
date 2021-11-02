@@ -21,34 +21,36 @@
 //  SOFTWARE.
 
 import UIKit
-class BackgroundView: UIView, UIGestureRecognizerDelegate{
+
+protocol PopUpViewDelegate {
+    func dismissView()
+}
+
+class BackgroundView: UIView{
     init() {
         super.init(frame: screenSize)
-        self.backgroundColor = .init(white: 1, alpha: 0.5)
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissPopup))
-        gesture.delegate = self
-        self.addGestureRecognizer(gesture)
+        self.backgroundColor = .black
+        self.alpha = 0.5
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func dismissPopup() {
-         print("vao dismis")
+    func dismissView() {
+         print("Dismiss BackgroundView")
          self.removeFromSuperview()
      }
 }
 
-class PopUpView: UIView {
+class PopUpView: UIView, UIGestureRecognizerDelegate {
     
     init() {
         super.init(frame: screenSize)
-        self.backgroundColor = .red
-//        self.alpha = 0.86
-//        let gesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissPopup))
-//        gesture.delegate = self
-//        self.addGestureRecognizer(gesture)
+        self.backgroundColor = .none
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissPopup))
+        gesture.delegate = self
+        self.addGestureRecognizer(gesture)
         setupViews()
         setupConstraints()
     }
@@ -96,7 +98,6 @@ class PopUpView: UIView {
     }
     
     func tableConstraint() {
-        print("table")
         table.translatesAutoresizingMaskIntoConstraints = false
         table.centerXAnchor.constraint(equalTo: subView.centerXAnchor).isActive = true
         table.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 10).isActive = true
@@ -105,19 +106,20 @@ class PopUpView: UIView {
         table.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         table.delegate = self
         table.dataSource = self
-        
     }
     
-   @objc func dismissPopup() {
-        print("vao dismis")
+    @objc func dismissPopup() {
+        print("Dismiss PopupView")
         self.removeFromSuperview()
+        self.delegate?.dismissView()
     }
+    
+    var delegate: PopUpViewDelegate?
     
     let subView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 5.0
-//        view.clipsToBounds = true
         return view
     }()
     
