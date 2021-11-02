@@ -40,7 +40,7 @@ class BackgroundView: UIView{
     func dismissView() {
          print("Dismiss BackgroundView")
          self.removeFromSuperview()
-     }
+    }
 }
 
 class PopUpView: UIView, UIGestureRecognizerDelegate {

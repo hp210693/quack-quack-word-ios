@@ -84,10 +84,10 @@ class LoginController: UIViewController {
     @objc func loginClick(){
         print("login click")
         background = BackgroundView()
-        view.addSubview(self.background)
         popup = PopUpView()
         popup.delegate = self
-        view.addSubview(self.popup)
+        view.addSubview(background)
+        view.addSubview(popup)
     }
     
     var background:BackgroundView!
